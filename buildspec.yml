@@ -1,0 +1,27 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.11.4
+    commands:
+      - echo "Installing Docker"
+      - apt-get update
+      - apt-get install -y docker.io
+      
+  pre_build:
+    commands:
+      - echo "Logging in to DockerHub"
+      - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+      
+  build:
+    commands:
+      - echo "Building Docker image"
+      - docker build -t archivyngdemo .
+      
+  post_build:
+    commands:
+      - echo "Pushing Docker image to DockerHub"
+      - docker push archivyngdemo
+
+  
