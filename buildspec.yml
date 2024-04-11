@@ -1,27 +1,19 @@
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      python: 3.11.4
-    commands:
-      - echo "Installing Docker"
-      - apt-get update
-      - apt-get install -y docker.io
-      
   pre_build:
     commands:
-      - echo "Logging in to DockerHub"
-      - echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-      
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 173679718835.dkr.ecr.us-east-1.amazonaws.com
+
   build:
     commands:
-      - echo "Building Docker image"
-      - docker build -t archivyngdemo .
-      
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build -t archivyngdemo:latest .
+      - docker tag archivyngdemo:latest 173679718835.dkr.ecr.us-east-1.amazonaws.com/archivyngdemo:latest
   post_build:
     commands:
-      - echo "Pushing Docker image to DockerHub"
-      - docker push archivyngdemo
-
-  
+      - echo Build completed on `date`
+      - echo Pushing the Docker image to Amazon ECR...
+      - docker push 173679718835.dkr.ecr.us-east-1.amazonaws.com/archivyngdemo:latest
