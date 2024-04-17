@@ -1,8 +1,10 @@
-import os
-print("Hello,World!")
-print("Current Dir is: ",os.getcwd()) #indicates that your current working directory
-print(os.listdir())
-print("Docker is set")
+from flask import Flask
 
-#list the image
-"https://1.bp.blogspot.com/-Q86XGVJahug/Xm-aQfgtuMI/AAAAAAAAAcA/qqPQeihI39EbG2N87jG65xfnCdvF85-WQCLcBGAsYHQ/s1600/docker.png"
+app = Flask(__name__)
+
+@app.route('/')
+def hello():
+    return 'Hello, World!'
+
+# if __name__ == '__main__':
+#     app.run(debug=True, host='0.0.0.0')

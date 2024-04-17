@@ -1,10 +1,17 @@
+# Use Python 3.11.5 as base image
 FROM python:3.11.5
 
-#set a directory for the app
+# Update package lists
+RUN apt-get update && apt-get install -y python3-pip
+
+# Install Flask
+RUN pip3 install Flask
+
+# Set the working directory in the container
 WORKDIR /app
 
-#copy all the files to the container
-COPY  . /app
+# Copy application files from the host to the container
+COPY . .
 
-#run the command
-CMD ["python", "app.py"]
+# Command to run the Flask application
+CMD ["python3", "-m", "flask", "run", "--host=0.0.0.0"]
